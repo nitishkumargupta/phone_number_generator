@@ -29,6 +29,7 @@ gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.8'
+  gem 'rails-controller-testing'
 end
 
 # Use ActiveStorage variant

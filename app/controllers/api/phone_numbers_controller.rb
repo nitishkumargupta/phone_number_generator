@@ -22,7 +22,7 @@ module Api
 		end
 
 		def check_number_availability
-			unless params[:number].match(/[1-9]{3}-[1-9]{3}-[1-9]{4}/)
+			unless params[:number].match(/^[1-9]{3}-[1-9]{3}-[1-9]{4}$/)
 				render json: {status: false , message: 'Invalid Format'}, status: 400
 				return
 			end
