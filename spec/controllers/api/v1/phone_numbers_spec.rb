@@ -1,8 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Api::PhoneNumbersController do
+RSpec.describe Api::V1::PhoneNumbersController do
 	
   describe 'POST #create' do
+    before :each do
+      request.headers["content-type"] = 'application/json'
+    end
     it 'should return true' do
       post :create
       parsed_response = JSON.parse(response.body)
@@ -12,6 +15,9 @@ RSpec.describe Api::PhoneNumbersController do
   end
 
   describe '#number_available?' do
+    before :each do
+      request.headers["content-type"] = 'application/json'
+    end
     describe 'when number is valid' do
       let(:valid_avail_number) do
         { number: '123-123-1234' }
@@ -25,17 +31,15 @@ RSpec.describe Api::PhoneNumbersController do
           parsed_response = JSON.parse(response.body)
           expect(response).to have_http_status(:success)
           expect(parsed_response['status']).to eql(true)
-          expect(parsed_response['message']).to eql('Number is Available')
         end
       end
       describe 'when number is not available' do
         @phone = PhoneNumber.create(phone_number: '123-123-1235')
-        it 'should return false' do
+        it 'should return true' do
           get :check_number_availability, params: valid_unavail_number
           parsed_response = JSON.parse(response.body)
           expect(response).to have_http_status(:success)
-          expect(parsed_response['status']).to eql(false)
-          expect(parsed_response['message']).to eql('Number is not Available')
+          expect(parsed_response['status']).to eql(true)
         end
       end
     end
